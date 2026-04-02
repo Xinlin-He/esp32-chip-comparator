@@ -5,7 +5,6 @@ let periSearchQuery = '';
 
 const featureGroups = {
     main: [
-        { key: 'series', label: '系列' },
         { key: 'cpu', label: 'CPU 架构' },
         { key: 'freq', label: '最高主频' },
         { key: 'wifi', label: 'Wi-Fi' },
@@ -34,39 +33,39 @@ const featureGroups = {
 };
 
 const featureExplanations = {
-    'series': '<b>系列定位</b>：S(高性能)、C(极致性价比)、H(智能家居协议)、P(通用高性能)、Original(经典款)。不同系列针对不同应用广度。',
-    'cpu': '<b>CPU 架构</b>：双核 (Dual-core) 允许将无线协议栈与用户逻辑分离，提供高实时性。单核 (Single-core) 通常功耗更低。RISC-V 是开源架构，Xtensa 是定制的高性能架构。',
-    'freq': '<b>最高主频</b>：主频决定计算速度。主频越高，处理音频、图形或复杂算法能力越强。低功耗场景常运行在较低主频以省电。',
-    'wifi': '<b>Wi-Fi 标准</b>：Wi-Fi 6 (ax) 引入 OFDMA 和 TWT，在高密度物联网环境中效率更高、延时更低且更省电。2.4G 穿透好，5G 带宽大。',
-    'ble': '<b>蓝牙版本</b>：蓝牙 5.0+ 提升了传输距离 (Long Range) 和数据吞吐。蓝牙 6.0 增强了精确定位。LE Audio 提供了更先进的音频流处理。',
-    'ls': '<b>Light-sleep (轻度睡眠)</b>：该模式下 CPU 暂停工作但保持状态，唤醒极快。电流越小，对于需要频繁唤醒（如保持 Wi-Fi 连接）的设备越省电。',
-    'ds': '<b>Deep-sleep (深度睡眠)</b>：极低功耗模式，仅 RTC 域工作。电流大小直接决定了电池供电传感器（如温湿度计）数年的待机时长。',
-    'rom': '<b>ROM (只读存储)</b>：芯片内部固化的代码空间，存放启动加载程序和内置库函数。越大意味着固件能调用的内置功能越多。',
-    'sram': '<b>SRAM (静态随机存储)</b>：运行时内存。SRAM 越大，能同时处理的任务越复杂（如 TLS 连接、大缓冲区数据处理）。',
-    'psram': '<b>PSRAM (伪静态随机存储)</b>：外部扩展内存，主要用于音频缓冲、大型显示屏驱动或 AI 模型处理。',
-    'gpio': '<b>GPIO (通用 IO)</b>：可编程引脚数量。引脚越多，可同时连接的外设（LED、按键、传感器、屏幕）越丰富。',
-    '15.4': '<b>IEEE 802.15.4</b>：支持 Zigbee、Thread 和 Matter 协议的基础，专为超低功耗、低比特率的网状网络设计。',
-    'GPIO': '<b>GPIO (通用输入输出)</b>：设备最基础的接口。更多的引脚意味着可以控制更多的硬件模块而无需扩展芯片。',
-    'ADC': '<b>ADC (模数转换器)</b>：将模拟信号（如传感器电压）转换为数字。分辨率越高（如 12-bit），采样得到的数据越精确。',
-    'UART': '<b>UART (串口)</b>：通用的异步串行通信接口。常用于打印日志、连接 GPS 或其他 MCU。',
-    'I2C': '<b>I2C (总线接口)</b>：两线制串行总线。适合连接大量传感器和显示屏幕。',
-    'SPI': '<b>SPI (串行外设接口)</b>：高速串行通信。常用于驱动高分辨率 LCD、SD 卡或高速传感器。',
-    'I2S': '<b>I2S (音频接口)</b>：专用于传输高质量音频数据。常用于连接麦克风和扬声器。',
-    'PWM': '<b>PWM (脉宽调制)</b>：LEDC 用于控制灯光亮度和颜色，MCPWM 专门用于电机、波形发生器等运动控制。',
-    'RMT': '<b>RMT (远程控制)</b>：支持红外编码传输，也可用于驱动 WS2812 等对时序要求极严的 RGB 灯条。',
-    'USB': '<b>USB 接口</b>：Serial/JTAG 用于调试；2.0 OTG 支持高速数据传输，可作为 U 盘、键盘等设备的主机或从机。',
-    'TWAI': '<b>TWAI (双线汽车接口)</b>：兼容 CAN 总线。CAN FD 支持更高的比特率和更大的载荷，广泛用于机器人和车载。',
-    'Security': '<b>安全特性</b>：硬件加密加速器（AES/SHA/RSA）和安全认证机制（Secure Boot/Flash Encryption）从硬件层面保护代码隐私和通信安全。',
-    'Touch': '<b>电容触摸接口</b>：通过引脚感知人体触摸，无需实体按键即可实现触摸开关功能。',
-    'LCD/Camera': '<b>多媒体接口</b>：专用的并行或 MIPI 接口，用于高速传输显示屏图像或摄像头采集的像素流。',
-    'SDIO': '<b>SDIO 接口</b>：用于连接 SD 卡扩容，或通过 SDIO 协议让 ESP32 作为 Wi-Fi 卡辅助其他主控联网。'
+    'cpu': '<b>CPU 架构</b>：ESP32 的 CPU 主要是 Xtensa 和 RISC-V。Xtensa 性能强劲、带 AI/DSP 指令集（如 S3）；RISC-V 在新型号（如 C3/C6/H2）上被广泛使用，功耗更低。双核架构（经典款、S3、P4）允许部分核心专职处理无线协议栈，另一核跑应用，大大提升实时并发能力。',
+    'freq': '<b>最高主频</b>：直接决定芯片的峰值计算能力。高性能系列（如 P4）高达 400MHz，S系列最高 240MHz，足以驱动高刷彩屏或音频算法；低功耗 C 系列通常在 120~160MHz，在性能和省电之间取得最佳平衡。',
+    'wifi': '<b>Wi-Fi 标准</b>：经典系列及 S2/S3 支持 Wi-Fi 4。进入 Wi-Fi 6 时代后，C6/C61 引入了 802.11ax（支持 OFDMA 和 TWT 目标唤醒时间），显著降低 IoT 节点在密集网络中的功耗。C5 更是支持了 5GHz 双频 Wi-Fi 6。',
+    'ble': '<b>蓝牙版本</b>：早期型号支持经典蓝牙 (BR/EDR) 与 BLE 4.2。C3/S3 升级至 BLE 5.0，大幅提升传输距离 (Long Range) 和吞吐量；新款 C6/H2 达到 BLE 5.3；H4 等新架构更支持了 BLE 6.0，提供极高精度的测距定位 (Channel Sounding) 和 LE Audio 音频能力。',
+    'ls': '<b>Light-sleep (轻度睡眠)</b>：该模式下 ESP32 暂停 CPU 执行但维持内存(SRAM)供电，唤醒时间仅为微秒级。结合 Wi-Fi 的 DTIM 心跳周期，能在保持网络常连接的同时，极大程度降低整体功耗。',
+    'ds': '<b>Deep-sleep (深度睡眠)</b>：仅保留 ULP（超低功耗协处理器）和 RTC 域工作，主 CPU 及大部分内存均断电，功耗仅几微安(µA)。是电池供电的温湿度贴片、智能门磁等设备实现“数年续航”的核心技术。',
+    'rom': '<b>ROM</b>：其中固化了乐鑫官方的 Bootloader 和基础的 Wi-Fi/蓝牙底层核心栈库函数。固化的 ROM 越大，不仅缩短启动时间，还能为用户的应用程序省下大量宝贵的 Flash 存储空间。',
+    'sram': '<b>SRAM</b>：分为 IRAM 和 DRAM。因为跑 Wi-Fi 协议栈本身需要占用较多内存缓冲，剩余的可用 SRAM（如 S3 具有高达 512KB SRAM）对运行复杂的 LVGL UI 界面、甚至运行小模型推理起到了决定性作用。',
+    'psram': '<b>PSRAM</b>：片外伪静态随机存储。当内置 SRAM 不够时（例如驱动高像素 LCD、做音频大缓存），可以通过高速总线外挂 PSRAM。像 ESP32-S3 就支持高达 8MB 或 16MB 的 Octal SPI (八线) PSRAM，带宽高得惊人。',
+    'gpio': '<b>GPIO</b>：引出的脚位数量。ESP32 拥有独门绝技“GPIO 矩阵 (GPIO Matrix)”，允许把绝大多数外设信号 (比如 PWM, I2C, SPI) 软件映射到任意物理管脚，大幅简化了 PCB 的布线难度。',
+    '15.4': '<b>IEEE 802.15.4</b>：专用于 Mesh 组网的低速低功耗射频硬件，是支持 Thread、Zigbee 和 Matter 协议的底层基础。目前装备在主打智能家居生态的 H 系列（ESP32-H2）和最新的 C/P 系列中。',
+    'GPIO': '<b>GPIO</b>：引出的脚位数量。ESP32 拥有独门绝技“GPIO 矩阵 (GPIO Matrix)”，允许把绝大多数外设信号 (比如 PWM, I2C, SPI) 软件映射到任意物理管脚，大幅简化了 PCB 的布线难度。',
+    'ADC': '<b>ADC (模数转换器)</b>：ESP32 系列的 ADC 历经多次迭代，新型号（如 S3/C6）大幅改善了早期产品的非线性问题，并且出厂自带 eFuse 硬件校准，极大提升了对模拟传感器读取的准确度。',
+    'UART': '<b>UART (串口)</b>：除了默认的 UART0 用作日志打印外，ESP32 可用 GPIO 矩阵将额外的硬件 UART 映射到任何引脚，轻松接入 GPS 模块、温湿度变送器等外部串口设备。',
+    'I2C': '<b>I2C</b>：常用于连接温湿度传感器或小型 OLED 屏幕。ESP32 硬件支持高达 1MHz 的 Fast-mode Plus (Fm+) 模式，可以轻松挂载大量低速 I2C 节点。',
+    'SPI': '<b>SPI</b>：乐鑫的 SPI 控制器带有强大的 DMA（直接内存访问），在驱动高刷新率的 TFT 屏幕、甚至摄像头数据搬运时，可以直接在后台完成，完全不占用 CPU 计算资源。',
+    'I2S': '<b>I2S</b>：虽然名为音频接口，但它的底层其实是一个高速并行移位寄存器。创客们经常将其利用在其“非设计用途”上：比如通过 DMA 疯狂输出并行数据，直接用来驱动大量 LED 点阵或老式并行 RGB 屏幕。',
+    'PWM': '<b>PWM</b>：乐鑫的 PWM 分两大家族。LEDC（LED 控制器）自带硬件渐变功能，非常适合平滑调光；而 MCPWM (电机控制 PWM) 则是高级工具，带死区控制和故障刹车，专为无刷电机 (BLDC) 及逆变器打造。',
+    'RMT': '<b>RMT (远程控制)</b>：ESP32 的“神级外设”。本意是为了红外遥控(IR)收发设计的，但因为它能产生纳秒级极其精确且可编程的波形，所以被广泛用来完美驱动 WS2812/NeoPixel 这类对时序极其苛刻的炫彩灯珠。',
+    'USB': '<b>USB 接口</b>：较新的 C 系列搭载 USB Serial/JTAG，无需再外挂 CP2102 等串口转换芯片就能直接连电脑烧录下载代码。而 S2/S3 则是原生 USB OTG，可以直接把自己模拟成为 U盘 (Mass Storage) 或电脑鼠标键盘 (HID)。P4 更是加持了高速的 USB 2.0 (480Mbps)。',
+    'TWAI': '<b>TWAI</b>：乐鑫将其汽车总线控制器命名为 TWAI，兼容 CAN 2.0B。新型号 C6、H4 等进一步支持了 CAN FD，允许更高的波特率与每帧高达 64 字节的有效载荷，在车载 OBD 和精密机器人控制 (如大疆无刷电机) 领域大放异彩。',
+    'Security': '<b>安全特性</b>：ESP32 内置极为强大的硬件安全模块。Secure BootV2 防止固件被篡改；Flash Encryption 使用片内防读取的密钥，将外部 Flash 的数据变为乱码，彻底断绝“抄板”和固件提取的可能性；且加解密不消耗 CPU。',
+    'Touch': '<b>电容触摸接口</b>：无需额外的触摸芯片，引脚可直接识别手指靠近产生的微小电容变化。高级型号甚至可以在 Deep-sleep (几十微安) 状态下通过触摸特定的按键唤醒系统。',
+    'LCD/Camera': '<b>多媒体接口</b>：到了 S3 时代，乐鑫专门加入了 LCD_CAM 外设，原生支持高通量并行数据吞吐，可直驱 8/16位 RGB 屏或数字麦克风/摄像头。最新的 P4 更突破性搭载了 MIPI DSI (显示) 与 MIPI CSI (相机) 接口，直接对标高性能 Linux 板卡。',
+    'SDIO': '<b>SDIO 接口</b>：除了用于外挂 SD 卡读取海量资源外，它还允许 ESP32 作为一个高速 Wi-Fi 扩展网卡 (SDIO Slave 模式)，通过 SDIO 总线被树莓派或其它不带 Wi-Fi 的高性能处理器高效调用。',
+    'Audio': '<b>音频加速</b>：像 H4 这样的新型号搭载了 ASRC 音频采样率转换器，大幅减轻 CPU 处理音频流时的运算量，结合 ESP-ADF 框架极度适合智能音箱领域开发。'
 };
 
 async function init() {
     try {
         const response = await fetch('chips_data.json');
         chipsData = await response.json();
-        
+
         const periKeys = new Set();
         Object.values(chipsData.chips).forEach(chip => {
             if (chip.peripherals) {
@@ -128,13 +127,13 @@ function renderChipSelector() {
 function setupTabs() {
     const buttons = document.querySelectorAll('.tab-btn');
     const searchContainer = document.getElementById('peripheral-search-container');
-    
+
     buttons.forEach(btn => {
         btn.onclick = () => {
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             activeCategory = btn.dataset.category;
-            
+
             if (searchContainer) {
                 if (activeCategory === 'peri') {
                     searchContainer.classList.remove('hidden');
@@ -142,7 +141,7 @@ function setupTabs() {
                     searchContainer.classList.add('hidden');
                 }
             }
-            
+
             renderComparison();
         };
     });
@@ -198,7 +197,7 @@ function renderSingleView(name, container) {
             </div>
         </div>
     `;
-    renderMultiView(document.createElement('div'), true); 
+    renderMultiView(document.createElement('div'), true);
 }
 
 function renderMultiView(container, isSingleDetail = false) {
@@ -230,19 +229,19 @@ function renderMultiView(container, isSingleDetail = false) {
         } else {
             values = selectedChips.map(name => chipsData.chips[name][feature.key] || 'N/A');
         }
-        
+
         const tr = document.createElement('tr');
         tr.className = 'clickable-row';
         tr.dataset.feature = feature.key;
         tr.innerHTML = `
             <td class="feature-label">${feature.label}</td>
             ${selectedChips.map((name, i) => {
-                const value = values[i];
-                const isSuperior = !isSingleDetail && !feature.isPeri && checkSuperior(feature.key, value, values);
-                return `<td class="${isSuperior ? 'superior' : ''}">${value}</td>`;
-            }).join('')}
+            const value = values[i];
+            const isSuperior = !isSingleDetail && !feature.isPeri && checkSuperior(feature.key, value, values);
+            return `<td class="${isSuperior ? 'superior' : ''}">${value}</td>`;
+        }).join('')}
         `;
-        
+
         tr.onclick = (e) => toggleRowExplanation(feature, tr);
         tbody.appendChild(tr);
     });
@@ -266,9 +265,9 @@ function toggleRowExplanation(feature, row) {
     const explTr = document.createElement('tr');
     explTr.className = 'explanation-row';
     const cellCount = selectedChips.length + 1;
-    
+
     const explanationText = featureExplanations[feature.key] || `<b>${feature.label}</b>：暂无详细说明。该参数决定了芯片的 ${feature.label} 性能。`;
-    
+
     explTr.innerHTML = `
         <td colspan="${cellCount}">
             <div class="explanation-content">
@@ -276,12 +275,12 @@ function toggleRowExplanation(feature, row) {
             </div>
         </td>
     `;
-    
+
     row.after(explTr);
 }
 
 function getCategoryLabel(cat) {
-    switch(cat) {
+    switch (cat) {
         case 'main': return '主要特性';
         case 'core': return '核心与存储';
         case 'comm': return '无线通信';

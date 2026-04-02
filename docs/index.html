@@ -1,222 +1,249 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 Chip Comparator | 芯片对比专家</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>:root {
-    --bg-color: #0a0c10;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --primary: #4f46e5;
-    --primary-light: #818cf8;
-    --secondary: #0ea5e9;
-    --accent: #f43f5e;
-    --text-main: #f8fafc;
-    --text-dim: #94a3b8;
-    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
-}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0c10;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #0ea5e9;
+            --accent: #f43f5e;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.6;
-    overflow-x: hidden;
-    min-height: 100vh;
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-/* Background Blobs */
-.background-blobs {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-}
+        /* Background Blobs */
+        .background-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
 
-.blob {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-    opacity: 0.15;
-    filter: blur(80px);
-    border-radius: 50%;
-    animation: move 20s infinite alternate;
-}
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.15;
+            filter: blur(80px);
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
 
-.blob-1 { top: -10%; left: -10%; background: radial-gradient(circle, var(--primary) 0%, transparent 70%); }
-.blob-2 { bottom: -10%; right: -10%; background: radial-gradient(circle, var(--secondary) 0%, transparent 70%); animation-delay: -5s; }
-.blob-3 { top: 40%; left: 30%; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); width: 400px; height: 400px; animation-delay: -10s; }
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+        }
 
-@keyframes move {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(100px, 100px) scale(1.1); }
-}
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            animation-delay: -5s;
+        }
 
-header {
-    padding: 4rem 0 2rem;
-    text-align: center;
-}
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            width: 400px;
+            height: 400px;
+            animation-delay: -10s;
+        }
 
-.logo {
-    font-family: 'Outfit', sans-serif;
-    font-size: 3.5rem;
-    font-weight: 800;
-    letter-spacing: -2px;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(to right, #fff, var(--primary-light));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        @keyframes move {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
 
-.logo span {
-    font-weight: 400;
-    color: var(--text-dim);
-}
+            100% {
+                transform: translate(100px, 100px) scale(1.1);
+            }
+        }
 
-.subtitle {
-    font-size: 1.1rem;
-    color: var(--text-dim);
-    font-weight: 300;
-}
+        header {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
 
-.glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    box-shadow: var(--shadow);
-}
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-section {
-    margin-bottom: 3rem;
-}
+        .logo span {
+            font-weight: 400;
+            color: var(--text-dim);
+        }
 
-h2 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    font-weight: 600;
-}
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-weight: 300;
+        }
 
-/* Compact Selection Panel */
-.panel-header-compact {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+        }
 
-.panel-header-compact h2 {
-    margin-bottom: 0;
-    font-size: 1.2rem;
-}
+        section {
+            margin-bottom: 3rem;
+        }
 
-.selection-actions-top {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-}
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
 
-.btn-tiny {
-    padding: 0.3rem 0.8rem;
-    font-size: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    color: var(--text-dim);
-    border: 1px solid var(--glass-border);
-    cursor: pointer;
-}
+        /* Compact Selection Panel */
+        .panel-header-compact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
 
-.badge-tiny {
-    background: var(--primary);
-    color: #fff;
-    font-size: 0.75rem;
-    padding: 0.3rem 0.8rem;
-    border-radius: 8px;
-    font-weight: 700;
-}
+        .panel-header-compact h2 {
+            margin-bottom: 0;
+            font-size: 1.2rem;
+        }
 
-.chip-groups-compact {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
+        .selection-actions-top {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
 
-.series-group-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 0.4rem;
-}
+        .btn-tiny {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: var(--text-dim);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+        }
 
-.series-group-header h3 {
-    font-size: 1.1rem;
-    color: #fff;
-    margin: 0;
-    min-width: 80px;
-}
+        .badge-tiny {
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+        }
 
-.series-pos-desc {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    font-weight: 300;
-}
+        .chip-groups-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
 
-.chip-grid-compact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
+        .series-group-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.4rem;
+        }
 
-.chip-card-compact {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-border);
-    padding: 0.5rem 0.9rem;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 0.9rem;
-    font-weight: 500;
-}
+        .series-group-header h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin: 0;
+            min-width: 80px;
+        }
 
-.chip-card-compact:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--primary-light);
-}
+        .series-pos-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-weight: 300;
+        }
 
-.chip-card-compact.selected {
-    background: var(--primary);
-    border-color: var(--primary-light);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
+        .chip-grid-compact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
 
-/* Updated Feature Labels */
+        .chip-card-compact {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 0.9rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .chip-card-compact:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary-light);
+        }
+
+        .chip-card-compact.selected {
+            background: var(--primary);
+            border-color: var(--primary-light);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Updated Feature Labels */
         tr.clickable-row {
             cursor: pointer;
             transition: var(--transition);
@@ -250,268 +277,307 @@ h2 {
         }
 
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .feature-label {
-    font-size: 0.85rem;
-}
+            font-size: 0.85rem;
+        }
 
-td, th {
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-}
+        td,
+        th {
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+        }
 
-/* Category Tabs */
-.detailed-comparison-tools {
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--glass-border);
-    padding-bottom: 1rem;
-}
+        /* Category Tabs */
+        .detailed-comparison-tools {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1rem;
+        }
 
-.category-tabs {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-}
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
 
-.tab-btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 30px;
-    border: 1px solid var(--glass-border);
-    background: transparent;
-    color: var(--text-dim);
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: var(--transition);
-}
+        .tab-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
 
-.tab-btn:hover {
-    border-color: var(--primary-light);
-    color: #fff;
-}
+        .tab-btn:hover {
+            border-color: var(--primary-light);
+            color: #fff;
+        }
 
-.tab-btn.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-}
+        .tab-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
 
-/* Peripheral Search */
-.search-container {
-    margin-bottom: 1.5rem;
-    animation: fadeIn 0.4s var(--transition);
-}
+        /* Peripheral Search */
+        .search-container {
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.4s var(--transition);
+        }
 
-#peripheral-search {
-    width: 100%;
-    padding: 0.8rem 1.2rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    color: #fff;
-    font-size: 1rem;
-    transition: var(--transition);
-}
+        #peripheral-search {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
 
-#peripheral-search:focus {
-    outline: none;
-    border-color: var(--primary-light);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
-}
+        #peripheral-search:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+        }
 
-.search-container.hidden {
-    display: none;
-}
-.single-chip-hero {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, transparent 100%);
-    border-radius: 20px;
-}
+        .search-container.hidden {
+            display: none;
+        }
 
-.chip-icon-large {
-    font-size: 4rem;
-    background: var(--glass-bg);
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 24px;
-    border: 1px solid var(--glass-border);
-}
+        .single-chip-hero {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, transparent 100%);
+            border-radius: 20px;
+        }
 
-.single-chip-header h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0.2rem;
-}
+        .chip-icon-large {
+            font-size: 4rem;
+            background: var(--glass-bg);
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+        }
 
-.single-chip-header .highlight-tag {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    padding: 0.2rem 0.8rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-}
+        .single-chip-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.2rem;
+        }
 
-.chip-card .series {
-    display: block;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-top: 0.2rem;
-}
+        .single-chip-header .highlight-tag {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
 
-.chip-card.selected .series {
-    color: rgba(255, 255, 255, 0.8);
-}
+        .chip-card .series {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
 
-.selection-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .chip-card.selected .series {
+            color: rgba(255, 255, 255, 0.8);
+        }
 
-.btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-}
+        .selection-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-main);
-}
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
 
-.badge {
-    background: var(--primary);
-    padding: 0.5rem 1rem;
-    border-radius: 30px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-/* Comparison Panel */
-.comparison-panel {
-    padding: 2rem;
-    animation: fadeIn 0.8s var(--transition);
-}
+        .badge {
+            background: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
 
-.panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
+        /* Comparison Panel */
+        .comparison-panel {
+            padding: 2rem;
+            animation: fadeIn 0.8s var(--transition);
+        }
 
-.comparison-scroll-container {
-    overflow-x: auto;
-    margin: 0 -2rem;
-    padding: 0 2rem;
-}
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
 
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    min-width: 800px;
-}
+        .comparison-scroll-container {
+            overflow-x: auto;
+            margin: 0 -2rem;
+            padding: 0 2rem;
+        }
 
-th, td {
-    padding: 1.25rem;
-    text-align: left;
-    border-bottom: 1px solid var(--glass-border);
-}
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 800px;
+        }
 
-th {
-    font-family: 'Outfit', sans-serif;
-    color: var(--text-dim);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+        th,
+        td {
+            padding: 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
 
-.feature-label {
-    min-width: 150px;
-    font-weight: 600;
-    color: var(--primary-light);
-    background: rgba(79, 70, 229, 0.03);
-}
+        th {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-.chip-header {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fff;
-    min-width: 200px;
-}
+        .feature-label {
+            min-width: 150px;
+            font-weight: 600;
+            color: var(--primary-light);
+            background: rgba(79, 70, 229, 0.03);
+        }
 
-.superior {
-    color: #4ade80; /* Green highlight for better specs */
-    font-weight: 700;
-}
+        .chip-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            min-width: 200px;
+        }
 
-.inferior {
-    opacity: 0.6;
-}
+        .superior {
+            color: #4ade80;
+            /* Green highlight for better specs */
+            font-weight: 700;
+        }
 
-/* States */
-.hidden { display: none; }
+        .inferior {
+            opacity: 0.6;
+        }
 
-.empty-state {
-    text-align: center;
-    padding: 5rem 0;
-    color: var(--text-dim);
-}
+        /* States */
+        .hidden {
+            display: none;
+        }
 
-.empty-state .icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.2;
-}
+        .empty-state {
+            text-align: center;
+            padding: 5rem 0;
+            color: var(--text-dim);
+        }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.2;
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-footer {
-    padding: 4rem 0;
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-color); }
-::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
-</style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        footer {
+            padding: 4rem 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
+
 <body>
     <div class="background-blobs">
         <div class="blob blob-1"></div>
@@ -524,7 +590,8 @@ footer {
             <h1 class="logo">ESP32 <span>Comparator</span></h1>
             <p class="subtitle">专业、详尽、直观的 ESP32 系列芯片对比工具</p>
             <div class="header-actions" style="margin-top: 1.5rem;">
-                <a href="wifi-knowledge.html" class="btn btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                <a href="wifi-knowledge.html" class="btn btn-secondary"
+                    style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
                     <span>🌐</span> WiFi 知识详解
                 </a>
             </div>
@@ -549,7 +616,7 @@ footer {
             <div id="view-mode-container">
                 <!-- Single chip view or Multi chip view will be injected here -->
             </div>
-            
+
             <div class="detailed-comparison-tools">
                 <div class="category-tabs" id="category-tabs">
                     <button class="tab-btn active" data-category="main">主要特性</button>
@@ -590,198 +657,197 @@ footer {
     </footer>
 
     <script>
-const embeddedChipsData = {"series_info": {"S": "高性能无线 MCU", "C": "低功耗无线 MCU（外设较少，不支持连接 PSRAM）", "P": "高性能通用 MCU", "H": "支持低功耗蓝牙 (BLE) 和 802.15.4 协议的无线 MCU", "Original": "经典系列 SoC"}, "chips": {"ESP32-C2": {"series": "C", "cpu": "单核 RISC-V", "freq": "120 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 5.0", "15.4": "N/A", "ls": "140 µA", "ds": "5 µA", "rom": "576 KB", "sram": "272 KB", "gpio": 14, "peripherals": {"GPIO": "14", "ADC": "12-bit, 5 通道", "UART": "2", "I2C": "1", "SPI": "3", "I2S": "0", "PWM": "LEDC (6 通道)", "RMT": "支持", "USB": "N/A", "TWAI": "N/A", "Security": "Secure Boot, Flash Encryption, ECC, RNG", "Touch": "N/A"}}, "ESP32-C3": {"series": "C", "cpu": "单核 RISC-V", "freq": "160 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 5.0", "15.4": "N/A", "ls": "130 µA", "ds": "5 µA", "rom": "384 KB", "sram": "400 KB HP + 8 KB LP", "gpio": 22, "peripherals": {"GPIO": "22", "ADC": "12-bit, 6 通道", "UART": "2", "I2C": "1", "SPI": "3", "I2S": "1", "PWM": "LEDC (6 通道)", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, AES, SHA, RSA, RNG, HMAC, Digital Signature", "Touch": "N/A"}}, "ESP32-C5": {"series": "C", "cpu": "单核 RISC-V （HP + LP）", "freq": "240 MHz", "wifi": "2.4 G & 5 G；IEEE802.11a/b/g/n/ac/ax", "ble": "BLE 5.0", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "60 µA", "ds": "12 µA", "rom": "320 KB", "sram": "384 KB HP + 16 KB LP", "gpio": 29, "peripherals": {"GPIO": "29", "ADC": "12-bit, 6 通道", "UART": "2 + 1 (LP)", "I2C": "1 + 1 (LP)", "SPI": "2", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (CAN FD)", "Security": "Secure Boot, Flash Encryption, TEE/APM", "Touch": "N/A", "SDIO": "支持"}}, "ESP32-C6": {"series": "C", "cpu": "单核 RISC-V （HP + LP）", "freq": "160 MHz", "wifi": "2.4 G；IEEE802.11b/g/n/ax", "ble": "BLE 5.3", "15.4": "Thread 1.3 + Zigbee 3.0", "ls": "35 µA", "ds": "7 µA", "rom": "320 KB", "sram": "512 KB HP + 16 KB LP", "gpio": 30, "peripherals": {"GPIO": "30", "ADC": "12-bit, 7 通道", "UART": "2 + 1 (LP)", "I2C": "1 + 1 (LP)", "SPI": "3", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, TEE/APM", "Touch": "N/A", "SDIO": "支持"}}, "ESP32-C61": {"series": "C", "cpu": "单核 RISC-V", "freq": "160 MHz", "wifi": "2.4 G；IEEE802.11b/g/n/ax", "ble": "BLE 5.4", "15.4": "N/A", "ls": "50 µA", "ds": "10 µA", "rom": "256 KB", "sram": "320 KB", "gpio": 30, "peripherals": {"GPIO": "30", "ADC": "12-bit, 4 通道", "UART": "3", "I2C": "1", "SPI": "2", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "N/A", "Security": "Secure Boot, Flash Encryption", "Touch": "N/A", "SDIO": "支持 (2.0)"}}, "ESP32-H2": {"series": "H", "cpu": "单核 RISC-V", "freq": "96 MHz", "wifi": "N/A", "ble": "BLE 5.0", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "N/A", "ds": "7 µA", "rom": "128 KB", "sram": "320 KB + 4 KB LP", "gpio": 26, "peripherals": {"GPIO": "26", "ADC": "12-bit", "UART": "2", "I2C": "2", "SPI": "3", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, Power Glitch Detector", "Touch": "N/A"}}, "ESP32-H21": {"series": "H", "cpu": "单核 RISC-V", "freq": "96 MHz", "wifi": "N/A", "ble": "BLE 5.3", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "N/A", "ds": "7 µA", "rom": "128 KB", "sram": "320 KB + 4 KB LP", "gpio": 19, "peripherals": {"GPIO": "19", "ADC": "12-bit, 4 通道", "UART": "2", "I2C": "2", "SPI": "3", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, Power Glitch Detector", "Touch": "N/A"}}, "ESP32-H4": {"series": "H", "cpu": "双核 RISC-V", "freq": "96 MHz", "wifi": "N/A", "ble": "BLE 6.0", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "N/A", "ds": "7 µA", "rom": "128 KB", "sram": "384 KB", "psram": "2 MB", "gpio": 40, "peripherals": {"GPIO": "40", "ADC": "12-bit, 5 通道", "UART": "1", "I2C": "2", "SPI": "3", "I2S": "1", "PWM": "LEDC, MCPWM", "RMT": "支持", "USB": "2.0 OTG + Serial/JTAG", "TWAI": "支持 (CAN FD)", "Security": "Secure Boot, Flash Encryption, TEE/APM", "Touch": "15 路", "Audio": "ASRC 支持"}}, "ESP32-S2": {"series": "S", "cpu": "单核 Xtensa LX7", "freq": "240 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "N/A", "15.4": "N/A", "ls": "140 µA", "ds": "22 µA", "rom": "128 KB", "sram": "320 KB", "gpio": 43, "peripherals": {"GPIO": "43", "ADC": "12-bit, 20 通道", "UART": "2", "I2C": "2", "SPI": "4", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "2.0 OTG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, AES, SHA, RSA, RNG, HMAC, Digital Signature", "Touch": "14 路", "LCD/Camera": "支持"}}, "ESP32-S3": {"series": "S", "cpu": "双核 Xtensa LX7", "freq": "240 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 5.0", "15.4": "N/A", "ls": "240 µA", "ds": "7 µA", "rom": "384 KB", "sram": "512 KB", "gpio": 45, "peripherals": {"GPIO": "45", "ADC": "12-bit, 20 通道", "UART": "3", "I2C": "2", "SPI": "4", "I2S": "2", "PWM": "LEDC, MCPWM", "RMT": "支持", "USB": "2.0 OTG + Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, World Controller", "Touch": "14 路", "LCD/Camera": "支持", "AI": "加速指令集支持"}}, "ESP32": {"series": "Original", "cpu": "双核 Xtensa LX6", "freq": "240 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 4.2 + BT Class", "15.4": "N/A", "ls": "800 µA", "ds": "10 µA", "rom": "448 KB", "sram": "520 KB", "gpio": 34, "peripherals": {"GPIO": "34", "ADC": "12-bit, 18 通道", "UART": "3", "I2C": "2", "SPI": "3", "I2S": "2", "PWM": "LEDC, MCPWM", "RMT": "支持", "USB": "N/A", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, AES, SHA, RSA, RNG", "Touch": "10 路", "Ethernet": "支持"}}, "ESP32-P4": {"series": "P", "cpu": "双核 RISC-V (HP + LP)", "freq": "400 MHz HP + 40 MHz LP", "wifi": "N/A", "ble": "N/A", "15.4": "N/A", "ls": "N/A", "ds": "N/A", "rom": "N/A", "sram": "768 KB HP + 32 KB LP", "gpio": 55, "peripherals": {"GPIO": "55", "ADC": "支持", "UART": "支持", "I2C": "支持", "SPI": "支持", "I2S": "支持", "PWM": "支持", "RMT": "支持", "USB": "2.0 High-speed OTG", "TWAI": "支持", "Security": "TEE, Secure Boot, ECC, AES, SHA", "Touch": "支持", "LCD/Camera": "MIPI-DSI / MIPI-CSI", "Ethernet": "支持", "Display": "H264/JPEG 编码"}}}};
-let chipsData = { chips: {}, series_info: {} };
-let selectedChips = [];
-let activeCategory = 'main';
-let periSearchQuery = '';
+        const embeddedChipsData = { "series_info": { "S": "高性能无线 MCU", "C": "低功耗无线 MCU", "P": "高性能通用 MCU", "H": "多协议无线 MCU", "Original": "经典系列 SoC" }, "chips": { "ESP32-C2": { "series": "C", "cpu": "单核 RISC-V", "freq": "120 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 5.0", "15.4": "N/A", "ls": "140 µA", "ds": "5 µA", "rom": "576 KB", "sram": "272 KB", "gpio": 14, "peripherals": { "GPIO": "14", "ADC": "12-bit, 5 通道", "UART": "2", "I2C": "1", "SPI": "3", "I2S": "0", "PWM": "LEDC (6 通道)", "RMT": "支持", "USB": "N/A", "TWAI": "N/A", "Security": "Secure Boot, Flash Encryption, ECC, RNG", "Touch": "N/A" } }, "ESP32-C3": { "series": "C", "cpu": "单核 RISC-V", "freq": "160 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 5.0", "15.4": "N/A", "ls": "130 µA", "ds": "5 µA", "rom": "384 KB", "sram": "400 KB HP + 8 KB LP", "gpio": 22, "peripherals": { "GPIO": "22", "ADC": "12-bit, 6 通道", "UART": "2", "I2C": "1", "SPI": "3", "I2S": "1", "PWM": "LEDC (6 通道)", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, AES, SHA, RSA, RNG, HMAC, Digital Signature", "Touch": "N/A" } }, "ESP32-C5": { "series": "C", "cpu": "单核 RISC-V （HP + LP）", "freq": "240 MHz", "wifi": "2.4 G & 5 G；IEEE802.11a/b/g/n/ac/ax", "ble": "BLE 5.0", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "60 µA", "ds": "12 µA", "rom": "320 KB", "sram": "384 KB HP + 16 KB LP", "gpio": 29, "peripherals": { "GPIO": "29", "ADC": "12-bit, 6 通道", "UART": "2 + 1 (LP)", "I2C": "1 + 1 (LP)", "SPI": "2", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (CAN FD)", "Security": "Secure Boot, Flash Encryption, TEE/APM", "Touch": "N/A", "SDIO": "支持" } }, "ESP32-C6": { "series": "C", "cpu": "单核 RISC-V （HP + LP）", "freq": "160 MHz", "wifi": "2.4 G；IEEE802.11b/g/n/ax", "ble": "BLE 5.3", "15.4": "Thread 1.3 + Zigbee 3.0", "ls": "35 µA", "ds": "7 µA", "rom": "320 KB", "sram": "512 KB HP + 16 KB LP", "gpio": 30, "peripherals": { "GPIO": "30", "ADC": "12-bit, 7 通道", "UART": "2 + 1 (LP)", "I2C": "1 + 1 (LP)", "SPI": "3", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, TEE/APM", "Touch": "N/A", "SDIO": "支持" } }, "ESP32-C61": { "series": "C", "cpu": "单核 RISC-V", "freq": "160 MHz", "wifi": "2.4 G；IEEE802.11b/g/n/ax", "ble": "BLE 5.4", "15.4": "N/A", "ls": "50 µA", "ds": "10 µA", "rom": "256 KB", "sram": "320 KB", "gpio": 30, "peripherals": { "GPIO": "30", "ADC": "12-bit, 4 通道", "UART": "3", "I2C": "1", "SPI": "2", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "N/A", "Security": "Secure Boot, Flash Encryption", "Touch": "N/A", "SDIO": "支持 (2.0)" } }, "ESP32-H2": { "series": "H", "cpu": "单核 RISC-V", "freq": "96 MHz", "wifi": "N/A", "ble": "BLE 5.0", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "N/A", "ds": "7 µA", "rom": "128 KB", "sram": "320 KB + 4 KB LP", "gpio": 26, "peripherals": { "GPIO": "26", "ADC": "12-bit", "UART": "2", "I2C": "2", "SPI": "3", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, Power Glitch Detector", "Touch": "N/A" } }, "ESP32-H21": { "series": "H", "cpu": "单核 RISC-V", "freq": "96 MHz", "wifi": "N/A", "ble": "BLE 5.3", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "N/A", "ds": "7 µA", "rom": "128 KB", "sram": "320 KB + 4 KB LP", "gpio": 19, "peripherals": { "GPIO": "19", "ADC": "12-bit, 4 通道", "UART": "2", "I2C": "2", "SPI": "3", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, Power Glitch Detector", "Touch": "N/A" } }, "ESP32-H4": { "series": "H", "cpu": "双核 RISC-V", "freq": "96 MHz", "wifi": "N/A", "ble": "BLE 6.0", "15.4": "Thread 1.4 + Zigbee 3.0", "ls": "N/A", "ds": "7 µA", "rom": "128 KB", "sram": "384 KB", "psram": "2 MB", "gpio": 40, "peripherals": { "GPIO": "40", "ADC": "12-bit, 5 通道", "UART": "1", "I2C": "2", "SPI": "3", "I2S": "1", "PWM": "LEDC, MCPWM", "RMT": "支持", "USB": "2.0 OTG + Serial/JTAG", "TWAI": "支持 (CAN FD)", "Security": "Secure Boot, Flash Encryption, TEE/APM", "Touch": "15 路", "Audio": "ASRC 支持" } }, "ESP32-S2": { "series": "S", "cpu": "单核 Xtensa LX7", "freq": "240 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "N/A", "15.4": "N/A", "ls": "140 µA", "ds": "22 µA", "rom": "128 KB", "sram": "320 KB", "gpio": 43, "peripherals": { "GPIO": "43", "ADC": "12-bit, 20 通道", "UART": "2", "I2C": "2", "SPI": "4", "I2S": "1", "PWM": "LEDC", "RMT": "支持", "USB": "2.0 OTG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, AES, SHA, RSA, RNG, HMAC, Digital Signature", "Touch": "14 路", "LCD/Camera": "支持" } }, "ESP32-S3": { "series": "S", "cpu": "双核 Xtensa LX7", "freq": "240 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 5.0", "15.4": "N/A", "ls": "240 µA", "ds": "7 µA", "rom": "384 KB", "sram": "512 KB", "gpio": 45, "peripherals": { "GPIO": "45", "ADC": "12-bit, 20 通道", "UART": "3", "I2C": "2", "SPI": "4", "I2S": "2", "PWM": "LEDC, MCPWM", "RMT": "支持", "USB": "2.0 OTG + Serial/JTAG", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, World Controller", "Touch": "14 路", "LCD/Camera": "支持", "AI": "加速指令集支持" } }, "ESP32": { "series": "Original", "cpu": "双核 Xtensa LX6", "freq": "240 MHz", "wifi": "2.4 G；IEEE802.11b/g/n", "ble": "BLE 4.2 + BT Class", "15.4": "N/A", "ls": "800 µA", "ds": "10 µA", "rom": "448 KB", "sram": "520 KB", "gpio": 34, "peripherals": { "GPIO": "34", "ADC": "12-bit, 18 通道", "UART": "3", "I2C": "2", "SPI": "3", "I2S": "2", "PWM": "LEDC, MCPWM", "RMT": "支持", "USB": "N/A", "TWAI": "支持 (2.0)", "Security": "Secure Boot, Flash Encryption, AES, SHA, RSA, RNG", "Touch": "10 路", "Ethernet": "支持" } }, "ESP32-P4": { "series": "P", "cpu": "双核 RISC-V (HP + LP)", "freq": "400 MHz HP + 40 MHz LP", "wifi": "N/A", "ble": "N/A", "15.4": "N/A", "ls": "N/A", "ds": "N/A", "rom": "N/A", "sram": "768 KB HP + 32 KB LP", "gpio": 55, "peripherals": { "GPIO": "55", "ADC": "支持", "UART": "支持", "I2C": "支持", "SPI": "支持", "I2S": "支持", "PWM": "支持", "RMT": "支持", "USB": "2.0 High-speed OTG", "TWAI": "支持", "Security": "TEE, Secure Boot, ECC, AES, SHA", "Touch": "支持", "LCD/Camera": "MIPI-DSI / MIPI-CSI", "Ethernet": "支持", "Display": "H264/JPEG 编码" } } } };
+        let chipsData = { chips: {}, series_info: {} };
+        let selectedChips = [];
+        let activeCategory = 'main';
+        let periSearchQuery = '';
 
-const featureGroups = {
-    main: [
-        { key: 'series', label: '系列' },
-        { key: 'cpu', label: 'CPU 架构' },
-        { key: 'freq', label: '最高主频' },
-        { key: 'wifi', label: 'Wi-Fi' },
-        { key: 'ble', label: '蓝牙' },
-        { key: 'ls', label: 'Light-sleep' },
-        { key: 'ds', label: 'Deep-sleep' }
-    ],
-    core: [
-        { key: 'cpu', label: '处理器核心' },
-        { key: 'freq', label: '时钟主频' },
-        { key: 'rom', label: 'ROM' },
-        { key: 'sram', label: 'SRAM' },
-        { key: 'psram', label: 'PSRAM 支持' },
-        { key: 'gpio', label: '可用 GPIO' }
-    ],
-    comm: [
-        { key: 'wifi', label: 'Wi-Fi 标准' },
-        { key: 'ble', label: '蓝牙版本' },
-        { key: '15.4', label: 'IEEE 802.15.4' }
-    ],
-    power: [
-        { key: 'ls', label: 'Light-sleep 电流' },
-        { key: 'ds', label: 'Deep-sleep 电流' }
-    ],
-    peri: []
-};
+        const featureGroups = {
+            main: [
+                { key: 'cpu', label: 'CPU 架构' },
+                { key: 'freq', label: '最高主频' },
+                { key: 'wifi', label: 'Wi-Fi' },
+                { key: 'ble', label: '蓝牙' },
+                { key: 'ls', label: 'Light-sleep' },
+                { key: 'ds', label: 'Deep-sleep' }
+            ],
+            core: [
+                { key: 'cpu', label: '处理器核心' },
+                { key: 'freq', label: '时钟主频' },
+                { key: 'rom', label: 'ROM' },
+                { key: 'sram', label: 'SRAM' },
+                { key: 'psram', label: 'PSRAM 支持' },
+                { key: 'gpio', label: '可用 GPIO' }
+            ],
+            comm: [
+                { key: 'wifi', label: 'Wi-Fi 标准' },
+                { key: 'ble', label: '蓝牙版本' },
+                { key: '15.4', label: 'IEEE 802.15.4' }
+            ],
+            power: [
+                { key: 'ls', label: 'Light-sleep 电流' },
+                { key: 'ds', label: 'Deep-sleep 电流' }
+            ],
+            peri: []
+        };
 
-const featureExplanations = {
-    'series': '<b>系列定位</b>：S(高性能)、C(极致性价比)、H(智能家居协议)、P(通用高性能)、Original(经典款)。不同系列针对不同应用广度。',
-    'cpu': '<b>CPU 架构</b>：双核 (Dual-core) 允许将无线协议栈与用户逻辑分离，提供高实时性。单核 (Single-core) 通常功耗更低。RISC-V 是开源架构，Xtensa 是定制的高性能架构。',
-    'freq': '<b>最高主频</b>：主频决定计算速度。主频越高，处理音频、图形或复杂算法能力越强。低功耗场景常运行在较低主频以省电。',
-    'wifi': '<b>Wi-Fi 标准</b>：Wi-Fi 6 (ax) 引入 OFDMA 和 TWT，在高密度物联网环境中效率更高、延时更低且更省电。2.4G 穿透好，5G 带宽大。',
-    'ble': '<b>蓝牙版本</b>：蓝牙 5.0+ 提升了传输距离 (Long Range) 和数据吞吐。蓝牙 6.0 增强了精确定位。LE Audio 提供了更先进的音频流处理。',
-    'ls': '<b>Light-sleep (轻度睡眠)</b>：该模式下 CPU 暂停工作但保持状态，唤醒极快。电流越小，对于需要频繁唤醒（如保持 Wi-Fi 连接）的设备越省电。',
-    'ds': '<b>Deep-sleep (深度睡眠)</b>：极低功耗模式，仅 RTC 域工作。电流大小直接决定了电池供电传感器（如温湿度计）数年的待机时长。',
-    'rom': '<b>ROM (只读存储)</b>：芯片内部固化的代码空间，存放启动加载程序和内置库函数。越大意味着固件能调用的内置功能越多。',
-    'sram': '<b>SRAM (静态随机存储)</b>：运行时内存。SRAM 越大，能同时处理的任务越复杂（如 TLS 连接、大缓冲区数据处理）。',
-    'psram': '<b>PSRAM (伪静态随机存储)</b>：外部扩展内存，主要用于音频缓冲、大型显示屏驱动或 AI 模型处理。',
-    'gpio': '<b>GPIO (通用 IO)</b>：可编程引脚数量。引脚越多，可同时连接的外设（LED、按键、传感器、屏幕）越丰富。',
-    '15.4': '<b>IEEE 802.15.4</b>：支持 Zigbee、Thread 和 Matter 协议的基础，专为超低功耗、低比特率的网状网络设计。',
-    'GPIO': '<b>GPIO (通用输入输出)</b>：设备最基础的接口。更多的引脚意味着可以控制更多的硬件模块而无需扩展芯片。',
-    'ADC': '<b>ADC (模数转换器)</b>：将模拟信号（如传感器电压）转换为数字。分辨率越高（如 12-bit），采样得到的数据越精确。',
-    'UART': '<b>UART (串口)</b>：通用的异步串行通信接口。常用于打印日志、连接 GPS 或其他 MCU。',
-    'I2C': '<b>I2C (总线接口)</b>：两线制串行总线。适合连接大量传感器和显示屏幕。',
-    'SPI': '<b>SPI (串行外设接口)</b>：高速串行通信。常用于驱动高分辨率 LCD、SD 卡或高速传感器。',
-    'I2S': '<b>I2S (音频接口)</b>：专用于传输高质量音频数据。常用于连接麦克风和扬声器。',
-    'PWM': '<b>PWM (脉宽调制)</b>：LEDC 用于控制灯光亮度和颜色，MCPWM 专门用于电机、波形发生器等运动控制。',
-    'RMT': '<b>RMT (远程控制)</b>：支持红外编码传输，也可用于驱动 WS2812 等对时序要求极严的 RGB 灯条。',
-    'USB': '<b>USB 接口</b>：Serial/JTAG 用于调试；2.0 OTG 支持高速数据传输，可作为 U 盘、键盘等设备的主机或从机。',
-    'TWAI': '<b>TWAI (双线汽车接口)</b>：兼容 CAN 总线。CAN FD 支持更高的比特率和更大的载荷，广泛用于机器人和车载。',
-    'Security': '<b>安全特性</b>：硬件加密加速器（AES/SHA/RSA）和安全认证机制（Secure Boot/Flash Encryption）从硬件层面保护代码隐私和通信安全。',
-    'Touch': '<b>电容触摸接口</b>：通过引脚感知人体触摸，无需实体按键即可实现触摸开关功能。',
-    'LCD/Camera': '<b>多媒体接口</b>：专用的并行或 MIPI 接口，用于高速传输显示屏图像或摄像头采集的像素流。',
-    'SDIO': '<b>SDIO 接口</b>：用于连接 SD 卡扩容，或通过 SDIO 协议让 ESP32 作为 Wi-Fi 卡辅助其他主控联网。'
-};
+        const featureExplanations = {
+            'cpu': '<b>CPU 架构</b>：ESP32 的 CPU 主要是 Xtensa 和 RISC-V。Xtensa 性能强劲、带 AI/DSP 指令集（如 S3）；RISC-V 在新型号（如 C3/C6/H2）上被广泛使用，功耗更低。双核架构（经典款、S3、P4）允许部分核心专职处理无线协议栈，另一核跑应用，大大提升实时并发能力。',
+            'freq': '<b>最高主频</b>：直接决定芯片的峰值计算能力。高性能系列（如 P4）高达 400MHz，S系列最高 240MHz，足以驱动高刷彩屏或音频算法；低功耗 C 系列通常在 120~160MHz，在性能和省电之间取得最佳平衡。',
+            'wifi': '<b>Wi-Fi 标准</b>：经典系列及 S2/S3 支持 Wi-Fi 4。进入 Wi-Fi 6 时代后，C6/C61 引入了 802.11ax（支持 OFDMA 和 TWT 目标唤醒时间），显著降低 IoT 节点在密集网络中的功耗。C5 更是支持了 5GHz 双频 Wi-Fi 6。',
+            'ble': '<b>蓝牙版本</b>：早期型号支持经典蓝牙 (BR/EDR) 与 BLE 4.2。C3/S3 升级至 BLE 5.0，大幅提升传输距离 (Long Range) 和吞吐量；新款 C6/H2 达到 BLE 5.3；H4 等新架构更支持了 BLE 6.0，提供极高精度的测距定位 (Channel Sounding) 和 LE Audio 音频能力。',
+            'ls': '<b>Light-sleep (轻度睡眠)</b>：该模式下 ESP32 暂停 CPU 执行但维持内存(SRAM)供电，唤醒时间仅为微秒级。结合 Wi-Fi 的 DTIM 心跳周期，能在保持网络常连接的同时，极大程度降低整体功耗。',
+            'ds': '<b>Deep-sleep (深度睡眠)</b>：仅保留 ULP（超低功耗协处理器）和 RTC 域工作，主 CPU 及大部分内存均断电，功耗仅几微安(µA)。是电池供电的温湿度贴片、智能门磁等设备实现“数年续航”的核心技术。',
+            'rom': '<b>ROM</b>：其中固化了乐鑫官方的 Bootloader 和基础的 Wi-Fi/蓝牙底层核心栈库函数。固化的 ROM 越大，不仅缩短启动时间，还能为用户的应用程序省下大量宝贵的 Flash 存储空间。',
+            'sram': '<b>SRAM</b>：分为 IRAM 和 DRAM。因为跑 Wi-Fi 协议栈本身需要占用较多内存缓冲，剩余的可用 SRAM（如 S3 具有高达 512KB SRAM）对运行复杂的 LVGL UI 界面、甚至运行小模型推理起到了决定性作用。',
+            'psram': '<b>PSRAM</b>：片外伪静态随机存储。当内置 SRAM 不够时（例如驱动高像素 LCD、做音频大缓存），可以通过高速总线外挂 PSRAM。像 ESP32-S3 就支持高达 8MB 或 16MB 的 Octal SPI (八线) PSRAM，带宽高得惊人。',
+            'gpio': '<b>GPIO</b>：引出的脚位数量。ESP32 拥有独门绝技“GPIO 矩阵 (GPIO Matrix)”，允许把绝大多数外设信号 (比如 PWM, I2C, SPI) 软件映射到任意物理管脚，大幅简化了 PCB 的布线难度。',
+            '15.4': '<b>IEEE 802.15.4</b>：专用于 Mesh 组网的低速低功耗射频硬件，是支持 Thread、Zigbee 和 Matter 协议的底层基础。目前装备在主打智能家居生态的 H 系列（ESP32-H2）和最新的 C/P 系列中。',
+            'GPIO': '<b>GPIO</b>：引出的脚位数量。ESP32 拥有独门绝技“GPIO 矩阵 (GPIO Matrix)”，允许把绝大多数外设信号 (比如 PWM, I2C, SPI) 软件映射到任意物理管脚，大幅简化了 PCB 的布线难度。',
+            'ADC': '<b>ADC (模数转换器)</b>：ESP32 系列的 ADC 历经多次迭代，新型号（如 S3/C6）大幅改善了早期产品的非线性问题，并且出厂自带 eFuse 硬件校准，极大提升了对模拟传感器读取的准确度。',
+            'UART': '<b>UART (串口)</b>：除了默认的 UART0 用作日志打印外，ESP32 可用 GPIO 矩阵将额外的硬件 UART 映射到任何引脚，轻松接入 GPS 模块、温湿度变送器等外部串口设备。',
+            'I2C': '<b>I2C</b>：常用于连接温湿度传感器或小型 OLED 屏幕。ESP32 硬件支持高达 1MHz 的 Fast-mode Plus (Fm+) 模式，可以轻松挂载大量低速 I2C 节点。',
+            'SPI': '<b>SPI</b>：乐鑫的 SPI 控制器带有强大的 DMA（直接内存访问），在驱动高刷新率的 TFT 屏幕、甚至摄像头数据搬运时，可以直接在后台完成，完全不占用 CPU 计算资源。',
+            'I2S': '<b>I2S</b>：虽然名为音频接口，但它的底层其实是一个高速并行移位寄存器。创客们经常将其利用在其“非设计用途”上：比如通过 DMA 疯狂输出并行数据，直接用来驱动大量 LED 点阵或老式并行 RGB 屏幕。',
+            'PWM': '<b>PWM</b>：乐鑫的 PWM 分两大家族。LEDC（LED 控制器）自带硬件渐变功能，非常适合平滑调光；而 MCPWM (电机控制 PWM) 则是高级工具，带死区控制和故障刹车，专为无刷电机 (BLDC) 及逆变器打造。',
+            'RMT': '<b>RMT (远程控制)</b>：ESP32 的“神级外设”。本意是为了红外遥控(IR)收发设计的，但因为它能产生纳秒级极其精确且可编程的波形，所以被广泛用来完美驱动 WS2812/NeoPixel 这类对时序极其苛刻的炫彩灯珠。',
+            'USB': '<b>USB 接口</b>：较新的 C 系列搭载 USB Serial/JTAG，无需再外挂 CP2102 等串口转换芯片就能直接连电脑烧录下载代码。而 S2/S3 则是原生 USB OTG，可以直接把自己模拟成为 U盘 (Mass Storage) 或电脑鼠标键盘 (HID)。P4 更是加持了高速的 USB 2.0 (480Mbps)。',
+            'TWAI': '<b>TWAI</b>：乐鑫将其汽车总线控制器命名为 TWAI，兼容 CAN 2.0B。新型号 C6、H4 等进一步支持了 CAN FD，允许更高的波特率与每帧高达 64 字节的有效载荷，在车载 OBD 和精密机器人控制 (如大疆无刷电机) 领域大放异彩。',
+            'Security': '<b>安全特性</b>：ESP32 内置极为强大的硬件安全模块。Secure BootV2 防止固件被篡改；Flash Encryption 使用片内防读取的密钥，将外部 Flash 的数据变为乱码，彻底断绝“抄板”和固件提取的可能性；且加解密不消耗 CPU。',
+            'Touch': '<b>电容触摸接口</b>：无需额外的触摸芯片，引脚可直接识别手指靠近产生的微小电容变化。高级型号甚至可以在 Deep-sleep (几十微安) 状态下通过触摸特定的按键唤醒系统。',
+            'LCD/Camera': '<b>多媒体接口</b>：到了 S3 时代，乐鑫专门加入了 LCD_CAM 外设，原生支持高通量并行数据吞吐，可直驱 8/16位 RGB 屏或数字麦克风/摄像头。最新的 P4 更突破性搭载了 MIPI DSI (显示) 与 MIPI CSI (相机) 接口，直接对标高性能 Linux 板卡。',
+            'SDIO': '<b>SDIO 接口</b>：除了用于外挂 SD 卡读取海量资源外，它还允许 ESP32 作为一个高速 Wi-Fi 扩展网卡 (SDIO Slave 模式)，通过 SDIO 总线被树莓派或其它不带 Wi-Fi 的高性能处理器高效调用。',
+            'Audio': '<b>音频加速</b>：像 H4 这样的新型号搭载了 ASRC 音频采样率转换器，大幅减轻 CPU 处理音频流时的运算量，结合 ESP-ADF 框架极度适合智能音箱领域开发。'
+        };
 
-async function init() {
-    try {
-        
-        chipsData = embeddedChipsData;
-        
-        const periKeys = new Set();
-        Object.values(chipsData.chips).forEach(chip => {
-            if (chip.peripherals) {
-                Object.keys(chip.peripherals).forEach(k => periKeys.add(k));
+        async function init() {
+            try {
+
+                chipsData = embeddedChipsData;
+
+                const periKeys = new Set();
+                Object.values(chipsData.chips).forEach(chip => {
+                    if (chip.peripherals) {
+                        Object.keys(chip.peripherals).forEach(k => periKeys.add(k));
+                    }
+                });
+                featureGroups.peri = Array.from(periKeys).sort().map(k => ({ key: k, label: k, isPeri: true }));
+
+                renderChipSelector();
+                setupTabs();
+                setupSearch();
+            } catch (error) {
+                console.error('Error loading chips data:', error);
             }
-        });
-        featureGroups.peri = Array.from(periKeys).sort().map(k => ({ key: k, label: k, isPeri: true }));
+        }
 
-        renderChipSelector();
-        setupTabs();
-        setupSearch();
-    } catch (error) {
-        console.error('Error loading chips data:', error);
-    }
-}
+        function setupSearch() {
+            const searchInput = document.getElementById('peripheral-search');
+            if (!searchInput) return;
+            searchInput.oninput = (e) => {
+                periSearchQuery = e.target.value.toLowerCase();
+                renderComparison();
+            };
+        }
 
-function setupSearch() {
-    const searchInput = document.getElementById('peripheral-search');
-    if (!searchInput) return;
-    searchInput.oninput = (e) => {
-        periSearchQuery = e.target.value.toLowerCase();
-        renderComparison();
-    };
-}
-
-function renderChipSelector() {
-    const selector = document.getElementById('chip-selector');
-    selector.innerHTML = '';
-    const grouped = {};
-    Object.entries(chipsData.chips).forEach(([name, data]) => {
-        if (!grouped[data.series]) grouped[data.series] = [];
-        grouped[data.series].push({ name, ...data });
-    });
-    const order = ['S', 'C', 'H', 'P', 'Original'];
-    order.forEach(series => {
-        if (grouped[series]) {
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'series-group';
-            groupDiv.innerHTML = `
+        function renderChipSelector() {
+            const selector = document.getElementById('chip-selector');
+            selector.innerHTML = '';
+            const grouped = {};
+            Object.entries(chipsData.chips).forEach(([name, data]) => {
+                if (!grouped[data.series]) grouped[data.series] = [];
+                grouped[data.series].push({ name, ...data });
+            });
+            const order = ['S', 'C', 'H', 'P', 'Original'];
+            order.forEach(series => {
+                if (grouped[series]) {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'series-group';
+                    groupDiv.innerHTML = `
                 <div class="series-group-header">
                     <h3>${series} 系列</h3>
                     <span class="series-pos-desc">${chipsData.series_info[series] || ''}</span>
                 </div>
                 <div class="chip-grid-compact"></div>
             `;
-            const grid = groupDiv.querySelector('.chip-grid-compact');
-            grouped[series].forEach(chip => {
-                const card = document.createElement('div');
-                card.className = `chip-card-compact ${selectedChips.includes(chip.name) ? 'selected' : ''}`;
-                card.innerHTML = chip.name;
-                card.onclick = () => toggleChip(chip.name, card);
-                grid.appendChild(card);
-            });
-            selector.appendChild(groupDiv);
-        }
-    });
-}
-
-function setupTabs() {
-    const buttons = document.querySelectorAll('.tab-btn');
-    const searchContainer = document.getElementById('peripheral-search-container');
-    
-    buttons.forEach(btn => {
-        btn.onclick = () => {
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeCategory = btn.dataset.category;
-            
-            if (searchContainer) {
-                if (activeCategory === 'peri') {
-                    searchContainer.classList.remove('hidden');
-                } else {
-                    searchContainer.classList.add('hidden');
+                    const grid = groupDiv.querySelector('.chip-grid-compact');
+                    grouped[series].forEach(chip => {
+                        const card = document.createElement('div');
+                        card.className = `chip-card-compact ${selectedChips.includes(chip.name) ? 'selected' : ''}`;
+                        card.innerHTML = chip.name;
+                        card.onclick = () => toggleChip(chip.name, card);
+                        grid.appendChild(card);
+                    });
+                    selector.appendChild(groupDiv);
                 }
+            });
+        }
+
+        function setupTabs() {
+            const buttons = document.querySelectorAll('.tab-btn');
+            const searchContainer = document.getElementById('peripheral-search-container');
+
+            buttons.forEach(btn => {
+                btn.onclick = () => {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.dataset.category;
+
+                    if (searchContainer) {
+                        if (activeCategory === 'peri') {
+                            searchContainer.classList.remove('hidden');
+                        } else {
+                            searchContainer.classList.add('hidden');
+                        }
+                    }
+
+                    renderComparison();
+                };
+            });
+        }
+
+        function toggleChip(name, element) {
+            const index = selectedChips.indexOf(name);
+            if (index > -1) {
+                selectedChips.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedChips.push(name);
+                element.classList.add('selected');
             }
-            
-            renderComparison();
-        };
-    });
-}
+            updateUI();
+        }
 
-function toggleChip(name, element) {
-    const index = selectedChips.indexOf(name);
-    if (index > -1) {
-        selectedChips.splice(index, 1);
-        element.classList.remove('selected');
-    } else {
-        selectedChips.push(name);
-        element.classList.add('selected');
-    }
-    updateUI();
-}
+        function updateUI() {
+            const comparisonSection = document.getElementById('comparison-section');
+            const emptyState = document.getElementById('empty-state');
+            const countBadge = document.getElementById('selection-count');
+            if (countBadge) countBadge.textContent = `已选 ${selectedChips.length}`;
+            if (selectedChips.length >= 1) {
+                comparisonSection.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                renderComparison();
+            } else {
+                comparisonSection.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            }
+        }
 
-function updateUI() {
-    const comparisonSection = document.getElementById('comparison-section');
-    const emptyState = document.getElementById('empty-state');
-    const countBadge = document.getElementById('selection-count');
-    if (countBadge) countBadge.textContent = `已选 ${selectedChips.length}`;
-    if (selectedChips.length >= 1) {
-        comparisonSection.classList.remove('hidden');
-        emptyState.classList.add('hidden');
-        renderComparison();
-    } else {
-        comparisonSection.classList.add('hidden');
-        emptyState.classList.remove('hidden');
-    }
-}
+        function renderComparison() {
+            const modeContainer = document.getElementById('view-mode-container');
+            if (selectedChips.length === 1) {
+                renderSingleView(selectedChips[0], modeContainer);
+            } else {
+                renderMultiView(modeContainer);
+            }
+        }
 
-function renderComparison() {
-    const modeContainer = document.getElementById('view-mode-container');
-    if (selectedChips.length === 1) {
-        renderSingleView(selectedChips[0], modeContainer);
-    } else {
-        renderMultiView(modeContainer);
-    }
-}
+        function renderSingleView(name, container) {
+            const chip = chipsData.chips[name];
+            const highlight = getChipHighlight(name, chip);
 
-function renderSingleView(name, container) {
-    const chip = chipsData.chips[name];
-    const highlight = getChipHighlight(name, chip);
-
-    container.innerHTML = `
+            container.innerHTML = `
         <div class="single-chip-hero">
             <div class="chip-icon-large">SoC</div>
             <div class="single-chip-header">
@@ -791,131 +857,132 @@ function renderSingleView(name, container) {
             </div>
         </div>
     `;
-    renderMultiView(document.createElement('div'), true); 
-}
+            renderMultiView(document.createElement('div'), true);
+        }
 
-function renderMultiView(container, isSingleDetail = false) {
-    const thead = document.getElementById('table-head');
-    const tbody = document.getElementById('table-body');
-    let currentFeatures = featureGroups[activeCategory];
+        function renderMultiView(container, isSingleDetail = false) {
+            const thead = document.getElementById('table-head');
+            const tbody = document.getElementById('table-body');
+            let currentFeatures = featureGroups[activeCategory];
 
-    if (activeCategory === 'peri' && periSearchQuery) {
-        currentFeatures = currentFeatures.filter(f => f.label.toLowerCase().includes(periSearchQuery));
-    }
+            if (activeCategory === 'peri' && periSearchQuery) {
+                currentFeatures = currentFeatures.filter(f => f.label.toLowerCase().includes(periSearchQuery));
+            }
 
-    thead.innerHTML = `
+            thead.innerHTML = `
         <tr>
             <th class="feature-label">特性 / ${getCategoryLabel(activeCategory)} (点击行查看说明)</th>
             ${selectedChips.map(name => `<th class="chip-header">${name}</th>`).join('')}
         </tr>
     `;
 
-    if (currentFeatures.length === 0 && activeCategory === 'peri') {
-        tbody.innerHTML = `<tr><td colspan="${selectedChips.length + 1}" style="text-align: center; color: var(--text-dim); padding: 3rem;">未找到相关外设内容</td></tr>`;
-        return;
-    }
+            if (currentFeatures.length === 0 && activeCategory === 'peri') {
+                tbody.innerHTML = `<tr><td colspan="${selectedChips.length + 1}" style="text-align: center; color: var(--text-dim); padding: 3rem;">未找到相关外设内容</td></tr>`;
+                return;
+            }
 
-    tbody.innerHTML = '';
-    currentFeatures.forEach(feature => {
-        let values;
-        if (feature.isPeri) {
-            values = selectedChips.map(name => chipsData.chips[name].peripherals ? (chipsData.chips[name].peripherals[feature.key] || 'N/A') : 'N/A');
-        } else {
-            values = selectedChips.map(name => chipsData.chips[name][feature.key] || 'N/A');
-        }
-        
-        const tr = document.createElement('tr');
-        tr.className = 'clickable-row';
-        tr.dataset.feature = feature.key;
-        tr.innerHTML = `
+            tbody.innerHTML = '';
+            currentFeatures.forEach(feature => {
+                let values;
+                if (feature.isPeri) {
+                    values = selectedChips.map(name => chipsData.chips[name].peripherals ? (chipsData.chips[name].peripherals[feature.key] || 'N/A') : 'N/A');
+                } else {
+                    values = selectedChips.map(name => chipsData.chips[name][feature.key] || 'N/A');
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'clickable-row';
+                tr.dataset.feature = feature.key;
+                tr.innerHTML = `
             <td class="feature-label">${feature.label}</td>
             ${selectedChips.map((name, i) => {
-                const value = values[i];
-                const isSuperior = !isSingleDetail && !feature.isPeri && checkSuperior(feature.key, value, values);
-                return `<td class="${isSuperior ? 'superior' : ''}">${value}</td>`;
-            }).join('')}
+                    const value = values[i];
+                    const isSuperior = !isSingleDetail && !feature.isPeri && checkSuperior(feature.key, value, values);
+                    return `<td class="${isSuperior ? 'superior' : ''}">${value}</td>`;
+                }).join('')}
         `;
-        
-        tr.onclick = (e) => toggleRowExplanation(feature, tr);
-        tbody.appendChild(tr);
-    });
 
-    if (!isSingleDetail) {
-        const modeContainer = document.getElementById('view-mode-container');
-        modeContainer.innerHTML = `<h2 style="margin-bottom: 1rem">对比矩阵</h2>`;
-    }
-}
+                tr.onclick = (e) => toggleRowExplanation(feature, tr);
+                tbody.appendChild(tr);
+            });
 
-function toggleRowExplanation(feature, row) {
-    const nextRow = row.nextElementSibling;
-    if (nextRow && nextRow.classList.contains('explanation-row')) {
-        nextRow.remove();
-        return;
-    }
+            if (!isSingleDetail) {
+                const modeContainer = document.getElementById('view-mode-container');
+                modeContainer.innerHTML = `<h2 style="margin-bottom: 1rem">对比矩阵</h2>`;
+            }
+        }
 
-    // Remove other expanded rows in this table if desired (accordion style)
-    // Removed for multi-expansion support
+        function toggleRowExplanation(feature, row) {
+            const nextRow = row.nextElementSibling;
+            if (nextRow && nextRow.classList.contains('explanation-row')) {
+                nextRow.remove();
+                return;
+            }
 
-    const explTr = document.createElement('tr');
-    explTr.className = 'explanation-row';
-    const cellCount = selectedChips.length + 1;
-    
-    const explanationText = featureExplanations[feature.key] || `<b>${feature.label}</b>：暂无详细说明。该参数决定了芯片的 ${feature.label} 性能。`;
-    
-    explTr.innerHTML = `
+            // Remove other expanded rows in this table if desired (accordion style)
+            // Removed for multi-expansion support
+
+            const explTr = document.createElement('tr');
+            explTr.className = 'explanation-row';
+            const cellCount = selectedChips.length + 1;
+
+            const explanationText = featureExplanations[feature.key] || `<b>${feature.label}</b>：暂无详细说明。该参数决定了芯片的 ${feature.label} 性能。`;
+
+            explTr.innerHTML = `
         <td colspan="${cellCount}">
             <div class="explanation-content">
                 ${explanationText}
             </div>
         </td>
     `;
-    
-    row.after(explTr);
-}
 
-function getCategoryLabel(cat) {
-    switch(cat) {
-        case 'main': return '主要特性';
-        case 'core': return '核心与存储';
-        case 'comm': return '无线通信';
-        case 'power': return '功耗管理';
-        case 'peri': return '外设资源';
-        default: return '';
-    }
-}
+            row.after(explTr);
+        }
 
-function getChipHighlight(name, chip) {
-    if (chip.series === 'S') return '高性能无线专家';
-    if (chip.series === 'C') return '极致性价比之选';
-    if (chip.series === 'H') return '智能家居核心 (Matter/Thread)';
-    if (chip.series === 'P') return '工业级高性能全能王';
-    return '经典之作';
-}
+        function getCategoryLabel(cat) {
+            switch (cat) {
+                case 'main': return '主要特性';
+                case 'core': return '核心与存储';
+                case 'comm': return '无线通信';
+                case 'power': return '功耗管理';
+                case 'peri': return '外设资源';
+                default: return '';
+            }
+        }
 
-function checkSuperior(key, value, allValues) {
-    if (value === 'N/A' || allValues.length < 2) return false;
-    const numericKeys = ['freq', 'gpio', 'ls', 'ds', 'rom', 'sram'];
-    if (numericKeys.includes(key)) {
-        const numValue = value.toString().replace(/[^0-9.]/g, '');
-        const num = parseFloat(numValue);
-        if (isNaN(num)) return false;
-        const nums = allValues.map(v => parseFloat(v.toString().replace(/[^0-9.]/g, ''))).filter(v => !isNaN(v));
-        if (key === 'ls' || key === 'ds') return num === Math.min(...nums);
-        return num === Math.max(...nums);
-    }
-    if (key === 'wifi' && value.includes('ax')) return true;
-    if (key === 'ble' && (value.includes('6.0') || value.includes('5.4'))) return true;
-    return false;
-}
+        function getChipHighlight(name, chip) {
+            if (chip.series === 'S') return '高性能无线专家';
+            if (chip.series === 'C') return '极致性价比之选';
+            if (chip.series === 'H') return '智能家居核心 (Matter/Thread)';
+            if (chip.series === 'P') return '工业级高性能全能王';
+            return '经典之作';
+        }
 
-document.getElementById('clear-selection').onclick = () => {
-    selectedChips = [];
-    document.querySelectorAll('.chip-card-compact').forEach(c => c.classList.remove('selected'));
-    updateUI();
-};
+        function checkSuperior(key, value, allValues) {
+            if (value === 'N/A' || allValues.length < 2) return false;
+            const numericKeys = ['freq', 'gpio', 'ls', 'ds', 'rom', 'sram'];
+            if (numericKeys.includes(key)) {
+                const numValue = value.toString().replace(/[^0-9.]/g, '');
+                const num = parseFloat(numValue);
+                if (isNaN(num)) return false;
+                const nums = allValues.map(v => parseFloat(v.toString().replace(/[^0-9.]/g, ''))).filter(v => !isNaN(v));
+                if (key === 'ls' || key === 'ds') return num === Math.min(...nums);
+                return num === Math.max(...nums);
+            }
+            if (key === 'wifi' && value.includes('ax')) return true;
+            if (key === 'ble' && (value.includes('6.0') || value.includes('5.4'))) return true;
+            return false;
+        }
 
-init();
+        document.getElementById('clear-selection').onclick = () => {
+            selectedChips = [];
+            document.querySelectorAll('.chip-card-compact').forEach(c => c.classList.remove('selected'));
+            updateUI();
+        };
 
-</script>
+        init();
+
+    </script>
 </body>
+
 </html>

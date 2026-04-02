@@ -1,9 +1,9 @@
 {
     "series_info": {
         "S": "高性能无线 MCU",
-        "C": "低功耗无线 MCU（外设较少，不支持连接 PSRAM）",
+        "C": "低功耗无线 MCU",
         "P": "高性能通用 MCU",
-        "H": "支持低功耗蓝牙 (BLE) 和 802.15.4 协议的无线 MCU",
+        "H": "多协议无线 MCU",
         "Original": "经典系列 SoC"
     },
     "chips": {
