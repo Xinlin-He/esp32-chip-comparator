@@ -259,19 +259,42 @@ function toggleRowExplanation(feature, row) {
         return;
     }
 
-    // Remove other expanded rows in this table if desired (accordion style)
-    // Removed for multi-expansion support
-
     const explTr = document.createElement('tr');
     explTr.className = 'explanation-row';
     const cellCount = selectedChips.length + 1;
 
-    const explanationText = featureExplanations[feature.key] || `<b>${feature.label}</b>：暂无详细说明。该参数决定了芯片的 ${feature.label} 性能。`;
+    let explanationText = featureExplanations[feature.key] || `<b>${feature.label}</b>：暂无详细说明。该参数决定了芯片的 ${feature.label} 性能。`;
+    
+    let dynamicAnalysis = `<div style="margin-top:0.8rem; padding-top:0.8rem; border-top:1px dashed rgba(255,255,255,0.1); color:var(--text-main);">`;
+    if (selectedChips.length === 1) {
+        const chipName = selectedChips[0];
+        const val = feature.isPeri ? (chipsData.chips[chipName].peripherals && chipsData.chips[chipName].peripherals[feature.key] || 'N/A') : (chipsData.chips[chipName][feature.key] || 'N/A');
+        dynamicAnalysis += `<b>当前选择 (${chipName})：</b><span style="color:#4ade80; margin-left:0.5rem">${val}</span>`;
+    } else {
+        const valueMap = {};
+        selectedChips.forEach(name => {
+            const val = feature.isPeri ? (chipsData.chips[name].peripherals && chipsData.chips[name].peripherals[feature.key] || 'N/A') : (chipsData.chips[name][feature.key] || 'N/A');
+            if (!valueMap[val]) valueMap[val] = [];
+            valueMap[val].push(name);
+        });
+        const uniqueValues = Object.keys(valueMap);
+        if (uniqueValues.length === 1) {
+            dynamicAnalysis += `<b>对比分析：</b>在【${feature.label}】特性上，所选芯片配置完全一致，均为 <span style="color:#4ade80">${uniqueValues[0]}</span>。`;
+        } else {
+            dynamicAnalysis += `<b>对比分析：</b>各芯片在【${feature.label}】存在差异<ul>`;
+            for (const [val, chips] of Object.entries(valueMap)) {
+                dynamicAnalysis += `<li style="margin-top: 0.2rem;"><b>${chips.join('、')}</b>: <span style="color:#4ade80">${val}</span></li>`;
+            }
+            dynamicAnalysis += `</ul>`;
+        }
+    }
+    dynamicAnalysis += `</div>`;
 
     explTr.innerHTML = `
         <td colspan="${cellCount}">
             <div class="explanation-content">
                 ${explanationText}
+                ${dynamicAnalysis}
             </div>
         </td>
     `;
