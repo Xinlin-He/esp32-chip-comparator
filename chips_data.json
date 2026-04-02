@@ -4,6 +4,7 @@
         "C": "低功耗无线 MCU",
         "P": "高性能通用 MCU",
         "H": "多协议无线 MCU",
+        "E": "无线伴随协处理器",
         "Original": "经典系列 SoC"
     },
     "chips": {
@@ -144,6 +145,46 @@
                 "Touch": "N/A",
                 "SDIO": "支持 (2.0)"
             }
+        },
+        "ESP32-E22": {
+            "series": "E",
+            "cpu": "网络协处理器 (Companion)",
+            "freq": "N/A",
+            "wifi": "Wi-Fi 7 (802.11be), 2.4/5/6GHz",
+            "ble": "BLE 5.4",
+            "15.4": "N/A",
+            "ls": "N/A",
+            "ds": "N/A",
+            "rom": "N/A",
+            "sram": "N/A",
+            "gpio": 16,
+            "peripherals": {
+                "GPIO": "支持",
+                "ADC": "N/A",
+                "UART": "支持",
+                "I2C": "支持",
+                "SPI": "支持",
+                "I2S": "支持",
+                "PWM": "支持",
+                "RMT": "N/A",
+                "USB": "支持 (主机接口)",
+                "TWAI": "N/A",
+                "Security": "Secure Boot 等",
+                "Touch": "N/A",
+                "SDIO": "支持 (主机接口)",
+                "PCIe": "支持"
+            },
+            "key_capabilities": [
+                "支持 2.4GHz/5GHz/6GHz 频段，支持 2x2 MIMO、160MHz 频宽和 1024-QAM 高阶调制，PHY 速率达 2.4 Gbps，满足 4K/8K 视频流和高速文件传输需求。",
+                "广泛支持 PCIe/SDIO/USB 接口，提供开源 Host 驱动 (Linux/Android/MCU), 适配 x86/ARM/RISC-V 等多种主控架构。",
+                "E22 最高支持 :ref:`MCS <mcs>` 11"
+            ],
+            "typical_applications": [
+                "<b>PC 无线网卡</b>：适用于 x86/ARM/RISC-V 架构的笔记本与台式机，支持 Windows/Linux 操作系统。",
+                "<b>AI 智算/机器人</b>：为边缘计算主控提供高速视觉传输通道，6GHz 频段有效降低复杂环境下的信号干扰。",
+                "<b>XR 穿戴设备/消费电子</b>：配合 2.4Gbps 高吞吐与低延迟特质，满足 VR/AR/NAS 无线串流的高带宽需求。",
+                "<b>工业网关</b>：在电磁环境复杂的工业现场，提供纯净的 6 GHz 频谱通信保障。"
+            ]
         },
         "ESP32-H2": {
             "series": "H",

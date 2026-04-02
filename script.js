@@ -99,7 +99,7 @@ function renderChipSelector() {
         if (!grouped[data.series]) grouped[data.series] = [];
         grouped[data.series].push({ name, ...data });
     });
-    const order = ['S', 'C', 'H', 'P', 'Original'];
+    const order = ['S', 'C', 'H', 'E', 'P', 'Original'];
     order.forEach(series => {
         if (grouped[series]) {
             const groupDiv = document.createElement('div');
@@ -187,6 +187,30 @@ function renderSingleView(name, container) {
     const chip = chipsData.chips[name];
     const highlight = getChipHighlight(name, chip);
 
+    let extraHTML = '';
+    if (chip.key_capabilities) {
+        extraHTML = `
+        <div class="chip-deep-dive" style="margin-top: 2.5rem; margin-bottom: 2.5rem; text-align: left;">
+            <div class="glass" style="padding: 2rem; border-radius: 20px; border: 1px solid var(--glass-border);">
+                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>✨</span> 关键能力
+                </h3>
+                <ul style="color: var(--text-dim); line-height: 1.8; padding-left: 1.5rem; margin-bottom: ${chip.typical_applications ? '2rem' : '0'};">
+                    ${chip.key_capabilities.map(cap => `<li style="margin-bottom: 0.5rem;">${cap}</li>`).join('')}
+                </ul>
+                ${chip.typical_applications ? `
+                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>🎯</span> 典型应用场景
+                </h3>
+                <ul style="color: var(--text-dim); line-height: 1.8; padding-left: 1.5rem;">
+                    ${chip.typical_applications.map(app => `<li style="margin-bottom: 0.5rem;">${app}</li>`).join('')}
+                </ul>
+                ` : ''}
+            </div>
+        </div>
+        `;
+    }
+
     container.innerHTML = `
         <div class="single-chip-hero">
             <div class="chip-icon-large">SoC</div>
@@ -196,6 +220,7 @@ function renderSingleView(name, container) {
                 <p style="margin-top: 0.5rem; color: var(--text-dim)">${chipsData.series_info[chip.series]}</p>
             </div>
         </div>
+        ${extraHTML}
     `;
     renderMultiView(document.createElement('div'), true);
 }
@@ -322,6 +347,7 @@ function getChipHighlight(name, chip) {
     if (chip.series === 'C') return '极致性价比之选';
     if (chip.series === 'H') return '智能家居核心 (Matter/Thread)';
     if (chip.series === 'P') return '工业级高性能全能王';
+    if (chip.series === 'E') return '网络伴随处理器';
     return '经典之作';
 }
 
