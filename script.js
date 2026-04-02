@@ -187,27 +187,25 @@ function renderSingleView(name, container) {
     const chip = chipsData.chips[name];
     const highlight = getChipHighlight(name, chip);
 
-    let extraHTML = '';
+    let keyCapsHTML = '';
     if (chip.key_capabilities) {
-        extraHTML = `
-        <div class="chip-deep-dive" style="margin-top: 2.5rem; margin-bottom: 2.5rem; text-align: left;">
-            <div class="glass" style="padding: 2rem; border-radius: 20px; border: 1px solid var(--glass-border);">
-                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+        keyCapsHTML = `
+            <div style="margin-top: 1.2rem; text-align: left; background: rgba(0,0,0,0.15); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--glass-border);">
+                <h4 style="color: var(--primary-light); margin-bottom: 0.5rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
                     <span>✨</span> 关键能力
-                </h3>
-                <ul style="color: var(--text-dim); line-height: 1.8; padding-left: 1.5rem; margin-bottom: ${chip.typical_applications ? '2rem' : '0'};">
-                    ${chip.key_capabilities.map(cap => `<li style="margin-bottom: 0.5rem;">${cap}</li>`).join('')}
+                </h4>
+                <ul style="color: var(--text-dim); line-height: 1.6; padding-left: 1.2rem; margin-bottom: ${chip.typical_applications ? '1rem' : '0'}; font-size: 0.9rem;">
+                    ${chip.key_capabilities.map(cap => `<li style="margin-bottom: 0.3rem;">${cap}</li>`).join('')}
                 </ul>
                 ${chip.typical_applications ? `
-                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <h4 style="color: var(--primary-light); margin-bottom: 0.5rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
                     <span>🎯</span> 典型应用场景
-                </h3>
-                <ul style="color: var(--text-dim); line-height: 1.8; padding-left: 1.5rem;">
-                    ${chip.typical_applications.map(app => `<li style="margin-bottom: 0.5rem;">${app}</li>`).join('')}
+                </h4>
+                <ul style="color: var(--text-dim); line-height: 1.6; padding-left: 1.2rem; font-size: 0.9rem;">
+                    ${chip.typical_applications.map(app => `<li style="margin-bottom: 0.3rem;">${app}</li>`).join('')}
                 </ul>
                 ` : ''}
             </div>
-        </div>
         `;
     }
 
@@ -218,9 +216,9 @@ function renderSingleView(name, container) {
                 <h2>${name}</h2>
                 <div class="highlight-tag">${highlight}</div>
                 <p style="margin-top: 0.5rem; color: var(--text-dim)">${chipsData.series_info[chip.series]}</p>
+                ${keyCapsHTML}
             </div>
         </div>
-        ${extraHTML}
     `;
     renderMultiView(document.createElement('div'), true);
 }
