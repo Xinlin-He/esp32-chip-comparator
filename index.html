@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Chip Comparator | 芯片对比专家</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1 class="logo">ESP32 <span>Comparator</span></h1>
+            <p class="subtitle">专业、详尽、直观的 ESP32 系列芯片对比工具</p>
+            <div class="header-actions" style="margin-top: 1.5rem;">
+                <a href="wifi-knowledge.html" class="btn btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span>🌐</span> WiFi 知识详解
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="selection-panel glass">
+            <div class="panel-header-compact">
+                <h2>选择芯片进行对比</h2>
+                <div class="selection-actions-top">
+                    <button id="clear-selection" class="btn btn-tiny">清空</button>
+                    <div id="selection-count" class="badge-tiny">已选 0</div>
+                </div>
+            </div>
+            <div id="chip-selector" class="chip-groups-compact">
+                <!-- Chips and Series Info will be injected here -->
+            </div>
+        </section>
+
+        <section id="comparison-section" class="comparison-panel hidden">
+            <div id="view-mode-container">
+                <!-- Single chip view or Multi chip view will be injected here -->
+            </div>
+            
+            <div class="detailed-comparison-tools">
+                <div class="category-tabs" id="category-tabs">
+                    <button class="tab-btn active" data-category="main">主要特性</button>
+                    <button class="tab-btn" data-category="core">核心与存储</button>
+                    <button class="tab-btn" data-category="comm">无线通信</button>
+                    <button class="tab-btn" data-category="power">功耗管理</button>
+                    <button class="tab-btn" data-category="peri">外设资源对比</button>
+                </div>
+            </div>
+
+            <div id="peripheral-search-container" class="search-container hidden">
+                <input type="text" id="peripheral-search" placeholder="🔍 输入想要搜索的外设名称 (如: GPIO, ADC, USB)...">
+            </div>
+
+            <div class="comparison-scroll-container">
+                <table id="comparison-table" class="glass">
+                    <thead id="table-head">
+                        <!-- Table header with chip names -->
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Table rows with features -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div id="empty-state" class="empty-state">
+            <div class="icon">🔍</div>
+            <h3>请选择至少两个芯片进行对比</h3>
+            <p>从上方网格中点击您感兴趣的芯片型号</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Developed by Antigravity Powered by Local Skills</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

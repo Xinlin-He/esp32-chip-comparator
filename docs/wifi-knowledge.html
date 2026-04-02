@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi 知识全书 | The Complete WiFi Knowledge Base</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="wifi-style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="side-nav">
+        <a href="#intro" class="nav-dot" data-title="简介"></a>
+        <a href="#basics" class="nav-dot" data-title="核心基础"></a>
+        <a href="#versions" class="nav-dot" data-title="世代演进"></a>
+        <a href="#security" class="nav-dot" data-title="安全与加密"></a>
+        <a href="#roaming" class="nav-dot" data-title="漫游优化"></a>
+        <a href="#advanced" class="nav-dot" data-title="底层协议"></a>
+        <a href="#wifi7" class="nav-dot" data-title="WiFi 7 深度领域"></a>
+        <a href="index.html" class="nav-dot" style="background: var(--accent);" data-title="返回对比器"></a>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1 class="logo" style="background: linear-gradient(to right, #fff, var(--primary-light))">WiFi <span>Encyclopedia</span></h1>
+            <p class="subtitle">全链路无线知识库：从物理层调制到 MAC 层调度，覆盖 WiFi 协议全貌</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 简介 -->
+        <section id="intro" class="glass bento-item">
+            <span class="section-tag">Introduction</span>
+            <h2>WiFi 的本质</h2>
+            <p>WiFi 指的是基于 <b>IEEE 802.11</b> 标准家族的无线局域网技术。它由 <b>Wi-Fi Alliance</b> 进行认证，确保全球不同厂家的设备能够互通。其本质是利用特定频率的电磁波（无线电）作为载体，通过复杂的调制解调技术在空间中传输二进制数据。</p>
+        </section>
+
+        <!-- 核心基础 -->
+        <section id="basics" class="info-category">
+            <h2>三项核心物理基础</h2>
+            <div class="knowledge-grid">
+                <!-- 频段 -->
+                <div class="glass bento-item">
+                    <span class="section-tag">Frequency Bands</span>
+                    <h3>工作频段 (Spectrum)</h3>
+                    <div class="value-display">2.4 / 5 / 6 <span class="unit">GHz</span></div>
+                    <ul style="font-size: 0.85rem; padding-left: 1.2rem; color: var(--text-dim);">
+                        <li><b>2.4GHz:</b> 13条信道，干扰重，波长长，穿墙能力强。</li>
+                        <li><b>5GHz:</b> 频段宽，干扰少，波长短，更易被遮挡。</li>
+                        <li><b>6GHz:</b> WiFi 6E/7 专属，1200MHz极宽频谱，零干扰。</li>
+                    </ul>
+                </div>
+                <!-- 带宽 -->
+                <div class="glass bento-item">
+                    <span class="section-tag">Bandwidth</span>
+                    <h3>信道带宽</h3>
+                    <div class="value-display">Up to 320 <span class="unit">MHz</span></div>
+                    <p>信道带宽决定了波形的采样速率。更大的带宽意味着在同一时间内能搬运更多的“货车”。从 20MHz 到 WiFi 7 的 320MHz，理论速率翻了几番。</p>
+                    <div class="note-box">注：WiFi 7 引领的 320MHz 仅在 6GHz 频段下可用。</div>
+                </div>
+                <!-- 空间流 -->
+                <div class="glass bento-item">
+                    <span class="section-tag">MIMO</span>
+                    <h3>空间流 (Spatial Streams)</h3>
+                    <div class="value-display">1x1 to 16x16</div>
+                    <p>利用天线阵列实现并行传输。多流 MIMO 像是在空中增加了多条互不干扰的平行轨道，极大提升了单设备或多设备的总容量。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 世代演进 -->
+        <section id="versions" class="info-category">
+            <h2>世代与协议映射</h2>
+            <div class="glass" style="padding: 1rem; overflow-hidden;">
+                <table class="tech-table">
+                    <thead>
+                        <tr>
+                            <th>商业名称</th>
+                            <th>IEEE 标准</th>
+                            <th>核心特征</th>
+                            <th>最大速率</th>
+                            <th>调制方式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>WiFi 4</b></td>
+                            <td>802.11n</td>
+                            <td>首次支持 MIMO, 2.4/5GHz</td>
+                            <td>600 Mbps</td>
+                            <td>64-QAM</td>
+                        </tr>
+                        <tr>
+                            <td><b>WiFi 5</b></td>
+                            <td>802.11ac</td>
+                            <td>5GHz 优化, 256-QAM</td>
+                            <td>6.9 Gbps</td>
+                            <td>256-QAM</td>
+                        </tr>
+                        <tr>
+                            <td><b>WiFi 6</b></td>
+                            <td>802.11ax</td>
+                            <td>OFDMA, 1024-QAM, 效率优先</td>
+                            <td>9.6 Gbps</td>
+                            <td>1024-QAM</td>
+                        </tr>
+                        <tr>
+                            <td><b>WiFi 7</b></td>
+                            <td>802.11be</td>
+                            <td>MLO, 4K-QAM, 320MHz</td>
+                            <td>46.1 Gbps</td>
+                            <td>4096-QAM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 安全与加密 -->
+        <section id="security" class="info-category">
+            <h2>安全、加密与身份验证</h2>
+            <div class="knowledge-grid">
+                <div class="glass bento-item">
+                    <span class="section-tag">Security</span>
+                    <h3>WPA3 (SAE) <span class="security-tag">Latest</span></h3>
+                    <p>引入了 <b>SAE (Simultaneous Authentication of Equals)</b> 握手，取代了脆弱的 PSK 方案，通过复杂的数学运算抵抗离线字典攻击。即使密码简单，黑客也难以破解。</p>
+                </div>
+                <div class="glass bento-item">
+                    <span class="section-tag">Privacy</span>
+                    <h3>OWE (免密加密)</h3>
+                    <p><b>Opportunistic Wireless Encryption</b> 为公共开放热点提供加密支持。用户无需输入密码即可连接，但通信过程依然是加密的，防止被“中间人”窃听。</p>
+                </div>
+                <div class="glass bento-item">
+                    <span class="section-tag">Heritage</span>
+                    <h3>WEP / WPA2</h3>
+                    <p>WEP 已被淘汰（数分钟内可破）。WPA2 目前最主流，但存在 KRACK 漏洞且易受暴力破解攻击。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 漫游优化 -->
+        <section id="roaming" class="info-category">
+            <h2>无缝漫游与网络优化 (802.11k/v/r)</h2>
+            <p style="margin-bottom: 2rem; color: var(--text-dim);">为了在多个路由器之间移动而不断连，需要以下三驾马车共同协作：</p>
+            <div class="deep-dive">
+                <div class="glass tech-explanation">
+                    <h4>802.11k (邻居报告)</h4>
+                    <p>路由器会主动告诉手机：附近还有哪些信号好的“备选”路由器。手机无需自己扫描所有频道，节省电量并缩短发现时间。</p>
+                </div>
+                <div class="glass tech-explanation">
+                    <h4>802.11v (BSS 转换)</h4>
+                    <p>路由器会温柔地给手机发消息：“亲，你现在连的这个有点挤，去隔壁那个 AP 吧，它人少！”引导客户端实现负载均衡。</p>
+                </div>
+                <div class="glass tech-explanation">
+                    <h4>802.11r (快速漫游 FT)</h4>
+                    <p>跳过繁琐的完整身份验证握手（尤其是涉及 WPA2 Enterprise 企业级认证时），将漫游切换延迟从数百毫秒降至 50 毫秒以内。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底层协议详解 -->
+        <section id="advanced" class="info-category">
+            <h2>MAC 与 PHY 层深度协议</h2>
+            <div class="knowledge-grid">
+                <!-- CSMA/CA -->
+                <div class="glass bento-item">
+                    <span class="section-tag">MAC Layer</span>
+                    <h3>CSMA/CA 机制</h3>
+                    <p>WiFi 是“听后即说”的机制。发送数据前先监听信道，若空闲则等待一段随机时间再发送，从而避免碰撞。这是 WiFi 相比移动网络（调度式）效率略低但成本低的原因。</p>
+                </div>
+                <!-- NAV -->
+                <div class="glass bento-item">
+                    <span class="section-tag">Optimization</span>
+                    <h3>NAV (网络分配矢量)</h3>
+                    <p>解决“隐藏节点”问题。当 A 向 B 发数据时，会在包头声明占用时长。周围所有听到的设备（即使听不到 C，但能听到 B）都会更新自己的 NAV 计数器，在这个时间内保持静默。</p>
+                </div>
+                <!-- Data Aggregation -->
+                <div class="glass bento-item">
+                    <span class="section-tag">Efficiency</span>
+                    <h3>帧聚合 (A-MPDU)</h3>
+                    <p>为了减少包头开销。与其发 10 个小包裹，不如把它们打包成一个巨大的集装箱，共用一个报头。从 WiFi 4 到 WiFi 7，集装箱越做越大。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WiFi 7 深度领域 -->
+        <section id="wifi7" class="info-category">
+            <h2>WiFi 7：通向极致的杀手锏</h2>
+            <div class="knowledge-grid">
+                <!-- MLO -->
+                <div class="glass bento-item" style="grid-column: span 2;">
+                    <span class="section-tag">Revolutionary</span>
+                    <h3>MLO (Multi-Link Operation)</h3>
+                    <p>WiFi 7 最核心的革新。以前设备只能在 2.4/5/6G 中选一条路走，现在可以“双管齐下”甚至“三管齐下”。</p>
+                    <div class="knowledge-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1rem;">
+                        <div style="font-size: 0.85rem;">
+                            <b>模式 1: STR (同时收发)</b><br>
+                            真正的带宽叠加，两条路同时跑，速率直接翻倍。
+                        </div>
+                        <div style="font-size: 0.85rem;">
+                            <b>模式 2: 无阻断切换</b><br>
+                            一条路遇到干扰，数据立刻无缝瞬时切换到另一条，延迟几乎为零。
+                        </div>
+                    </div>
+                </div>
+                <!-- 4096-QAM -->
+                <div class="glass bento-item">
+                    <span class="section-tag">PHY Level</span>
+                    <h3>4K-QAM 调制</h3>
+                    <p>每个信号符号携带 <b>12 bits</b> 数据（相比 WiFi 6 的 10 bits）。虽然对信号纯净度要求极高，但在近距离下能让速率再次提升 20%。</p>
+                </div>
+                <!-- Puncturing -->
+                <div class="glass bento-item">
+                    <span class="section-tag">Spectrum Resilience</span>
+                    <h3>前导码打孔 (Puncturing)</h3>
+                    <p>在 320MHz 的超宽信道中，如果中间几条马路坏了（被干扰），以前整条路都不能用了。现在系统可以把坏的部分抠掉，利用剩下的完好马路继续传输。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 WiFi Encyclopedia | The Definitive Guide for Engineers</p>
+            <p style="font-size: 0.7rem; opacity: 0.5;">Compiled by Antigravity Powered by Advanced Agentic Coding</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling and observer code omitted for brevity but should be retained from previous version
+        document.querySelectorAll('.nav-dot').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        const observerOptions = { threshold: 0.3 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.nav-dot').forEach(dot => {
+                        const active = dot.getAttribute('href') === '#' + id;
+                        dot.style.background = active ? 'var(--primary)' : 'var(--glass-border)';
+                        dot.style.transform = active ? 'scale(1.3)' : 'scale(1)';
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
